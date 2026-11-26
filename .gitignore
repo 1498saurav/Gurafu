@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.env*
+.DS_Store
+coverage/
+*.log
+
+# Keep private mappings out of public repositories
+private/
+*.local.yaml
+*.local.yml

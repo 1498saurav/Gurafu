@@ -1,0 +1,33 @@
+# Synthetic example; not company data. The application starts empty.
+target_schema: sample_catalog
+tables:
+  - name: customer_orders
+    primary_keys: [order_id]
+    sql: SELECT customer_id, order_id FROM customer_orders
+    sinks:
+      neptune:
+        vertex:
+          - label: customer
+            id_column: [customer_id]
+            properties: []
+          - label: order
+            id_column: [order_id]
+            properties: []
+        edges:
+          - label: places
+            from: {label: customer, id_column: [customer_id]}
+            to: {label: order, id_column: [order_id]}
+  - name: order_lines
+    primary_keys: [order_id, product_id]
+    sql: SELECT order_id, product_id, quantity FROM order_lines
+    sinks:
+      neptune:
+        vertex:
+          - label: product
+            id_column: [product_id]
+            properties: []
+        edges:
+          - label: contains
+            from: {label: order, id_column: [order_id]}
+            to: {label: product, id_column: [product_id]}
+            properties: [quantity]
